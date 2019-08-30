@@ -1,0 +1,33 @@
+.ui.input>input {
+  background-color: rgba(124, 117, 117, 0.712);
+  width: 600px;
+  /* margin-left: 207px; */
+}
+
+.ui.search .prompt {
+    border-radius: 0.5rem;
+}
+
+.ui.menu .item>a:not(.ui){
+  vertical-align: baseline;
+  line-height: 2.5;
+}
+
+.mainContainer {
+  padding-top: 5%;
+  /* margin-top: 10px; */
+}
+
+.home {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.ui.secondary.inverted.menu{
+  background-color: rgb(24, 24, 24);
+}
