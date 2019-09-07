@@ -1,7 +1,11 @@
 {
-  "name": "client",
+  "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "npm": "6.9.0",
+    "node": "12.6.0"
+  },
   "dependencies": {
     "dotenv": "^8.1.0",
     "plotly.js": "^1.49.1",
