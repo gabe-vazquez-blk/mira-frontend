@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Segment, Grid, Divider, Icon, Header } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import { setWatchlist, getWatchlist, getNews } from '../actions'
+import { setWatchlist, getWatchlist, getNews, removeFromWatchList } from '../actions'
 
 class Stock extends Component {
 
@@ -45,20 +45,7 @@ class Stock extends Component {
     .then(() => this.props.getNews(this.props.watchlist))
   }
   
-  removeFromWatchList = ()=>{
-    console.log('REMOVING...')
-    fetch(`${process.env.REACT_APP_BACKEND}/remove_from_watchlist/${this.props.stock.id}`,{
-      method: 'DELETE',
-      headers: {
-        "Authorization": localStorage.token,
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-    })
-    .then(()=> this.props.getWatchlist(this.props.currentUser))
-    .then(() => this.setState({ watching: false }))
-  }
-  
+
   watchingMarkers =()=>{
     const { watchlist, stock } = this.props
     const watchlistTickers = watchlist.map(stock => stock.ticker)
@@ -70,10 +57,10 @@ class Stock extends Component {
   }
   
   handleWatchingMarkers =()=>{
-    const { watchlist, stock } = this.props
+    const { watchlist, stock, removeFromWatchList } = this.props
     const watchlistTickers = watchlist.map(stock => stock.ticker)
     if (watchlistTickers.includes(stock.ticker)) {
-      this.removeFromWatchList()
+      removeFromWatchList(stock.id)
     } else{
       this.addToWatchList()
     }
@@ -206,4 +193,5 @@ function msp(state) {
 export default connect(msp, { 
   setWatchlist, 
   getWatchlist, 
-  getNews })(Stock)
+  getNews,
+  removeFromWatchList })(Stock)

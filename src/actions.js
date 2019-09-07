@@ -90,6 +90,22 @@ function autoLogin(){
     }
   }
 
+function removeFromWatchList(stockId) {
+  return function(dispatch){
+    console.log('REMOVING...')
+    fetch(`${process.env.REACT_APP_BACKEND}/remove_from_watchlist/${stockId}`, {
+      method: 'DELETE',
+      headers: {
+        "Authorization": localStorage.token,
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+    })
+      .then(resp => resp.json())
+      .then(watchlist => dispatch(setWatchlist(watchlist)))
+  }
+}
+
   // function template(argsFromComponent){
   //   return function(dispatch){
   
@@ -106,5 +122,6 @@ export {
   setShowStock,
   autoLogin,
   getWatchlist,
-  getNews
+  getNews,
+  removeFromWatchList
 }
