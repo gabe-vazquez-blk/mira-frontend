@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
-import { Segment, List, Grid } from 'semantic-ui-react'
+import { Segment, List, Grid, Icon } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import MainGraph from '../components/MainGraph'
 import SocialSentiment from '../components/SocialSentiment'
@@ -11,16 +11,24 @@ import Esg from '../components/Esg'
 
 class Watchlist extends Component {
 
+
   handleClick = (stock)=>{
     this.props.setCurrentStock(stock)
   }
   
+
   renderWatchList = ()=>{
     const { watchlist } = this.props
     return watchlist.map(stock=>{
       return(
-        <List.Item onClick={()=>this.handleClick(stock)}>
-          {stock.ticker}
+        <List.Item onClick={() => this.handleClick(stock)}>
+          {stock.ticker} 
+          <div className='watchlist-x'>
+            <Icon 
+              name='x'
+              color='red'
+            />
+          </div>
         </List.Item>
       )
     })

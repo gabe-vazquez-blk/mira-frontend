@@ -31,3 +31,12 @@
 .ui.secondary.inverted.menu{
   background-color: rgb(24, 24, 24);
 }
+
+.watchlist-x {
+  float: right;
+  opacity: 0;
+}
+
+.watchlist-x:hover {
+  opacity: 1;
+}
