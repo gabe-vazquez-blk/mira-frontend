@@ -85,6 +85,7 @@ class StockIndex extends Component {
 
 
   render() {
+    console.log('WATCHLIST:',this.props.watchlist)
     return (
       <Route exact path="/stocks" render={() => { 
     

@@ -6,7 +6,7 @@ import MainGraph from '../components/MainGraph'
 import SocialSentiment from '../components/SocialSentiment'
 import Company from '../components/Company'
 import News from '../components/News'
-import { setCurrentStock } from '../actions'
+import { setCurrentStock, removeFromWatchList } from '../actions'
 import Esg from '../components/Esg'
 
 class Watchlist extends Component {
@@ -18,7 +18,7 @@ class Watchlist extends Component {
   
 
   renderWatchList = ()=>{
-    const { watchlist } = this.props
+    const { watchlist, removeFromWatchList } = this.props
     return watchlist.map(stock=>{
       return(
         <List.Item onClick={() => this.handleClick(stock)}>
@@ -27,6 +27,7 @@ class Watchlist extends Component {
             <Icon 
               name='x'
               color='red'
+              onClick={()=>removeFromWatchList(stock.id)}
             />
           </div>
         </List.Item>
@@ -93,4 +94,4 @@ function msp(state) {
   }
 }
 
-export default connect(msp, { setCurrentStock })(Watchlist)
+export default connect(msp, { setCurrentStock, removeFromWatchList })(Watchlist)

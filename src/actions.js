@@ -61,18 +61,18 @@ function autoLogin(){
     }
   }
 
-  function getWatchlist(currentUser){
-    return function(dispatch){
-      let newWatchlist = []
-      fetch(`${process.env.REACT_APP_BACKEND}/users/${currentUser.id}`)
-        .then(resp => resp.json())
-        .then(user => {
-          dispatch(setWatchlist(user.stocks))
-          newWatchlist = user.stocks
-        })
-        .then(() => dispatch(getNews(newWatchlist)))
-    }
+function getWatchlist(currentUser){
+  return function(dispatch){
+    let newWatchlist = []
+    fetch(`${process.env.REACT_APP_BACKEND}/users/${currentUser.id}`)
+      .then(resp => resp.json())
+      .then(user => {
+        dispatch(setWatchlist(user.stocks))
+        newWatchlist = user.stocks
+      })
+      .then(() => dispatch(getNews(newWatchlist)))
   }
+}
 
   function getNews(watchlist){
     return function(dispatch){
@@ -84,7 +84,6 @@ function autoLogin(){
       Promise.all(promiseArray)
       .then(responses => {
         const response = responses.flat()
-
         dispatch({ type: NEWS, payload: response })
       })
     }
@@ -102,7 +101,9 @@ function removeFromWatchList(stockId) {
       },
     })
       .then(resp => resp.json())
-      .then(watchlist => dispatch(setWatchlist(watchlist)))
+      .then(watchlist => {
+        console.log(watchlist)
+        dispatch(setWatchlist(watchlist))})
   }
 }
 
