@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Segment, Grid, Divider, Icon, Header } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import { setWatchlist, getWatchlist, getNews, removeFromWatchList } from '../actions'
+import { setWatchlist, getNews, removeFromWatchList } from '../actions'
 
 class Stock extends Component {
 
@@ -192,6 +192,5 @@ function msp(state) {
 
 export default connect(msp, { 
   setWatchlist, 
-  getWatchlist, 
   getNews,
   removeFromWatchList })(Stock)
