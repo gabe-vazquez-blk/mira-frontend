@@ -43,7 +43,7 @@ class SearchBar extends Component {
 
     return (
       <Grid>
-        <Grid.Column >
+        <Grid.Column>
           <Search
             loading={isLoading}
             onResultSelect={this.handleResultSelect}
@@ -55,6 +55,7 @@ class SearchBar extends Component {
             value={value}
             {...this.props}
             placeholder='Ticker'
+            style={{ marginLeft: '23.9em'}}
           />
         </Grid.Column>
       </Grid>
