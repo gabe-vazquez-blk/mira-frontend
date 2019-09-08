@@ -43,7 +43,7 @@ class SearchBar extends Component {
 
     return (
       <Grid>
-        <Grid.Column style={{marginLeft: '360px'}}>
+        <Grid.Column >
           <Search
             loading={isLoading}
             onResultSelect={this.handleResultSelect}
