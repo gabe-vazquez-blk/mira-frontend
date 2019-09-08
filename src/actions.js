@@ -63,7 +63,6 @@ function autoLogin(){
 
 function getNews(watchlist){
   return function(dispatch){
-    console.log('YO!')
     const promiseArray = watchlist.map(stock => {
       return fetch(`${process.env.REACT_APP_TEST_API_URL}/stock/${stock.ticker}/news?token=${process.env.REACT_APP_TEST_API_KEY}`)
       .then(resp => resp.json())
@@ -75,6 +74,31 @@ function getNews(watchlist){
       console.log('GETTING NEWS:', response)
       dispatch({ type: NEWS, payload: response })
     })
+  }
+}
+
+function addToWatchList(stockId, userId, watchlist){
+  return function(dispatch){
+    console.log('ADDING TO WATCHLIST...')
+    fetch(`${process.env.REACT_APP_BACKEND}/add_to_watchlist/${stockId}`, {
+      method: 'POST',
+      headers: {
+        "Authorization": localStorage.token,
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify({
+        user_id: userId,
+        stock_id: stockId
+      })
+    })
+      .then(resp => resp.json())
+      .then(stock => { 
+        const newWatchlist = [stock, ...watchlist]
+        console.log(newWatchlist)
+        dispatch(setWatchlist(newWatchlist))
+        dispatch(getNews([stock, ...watchlist]))
+      })
   }
 }
 
@@ -109,7 +133,8 @@ export {
   setShowStock,
   autoLogin,
   getNews,
-  removeFromWatchList
+  removeFromWatchList,
+  addToWatchList
 }
 
 // <---- TEMPLATE ---->

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Segment, Grid, Divider, Icon, Header } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import { setWatchlist, getNews, removeFromWatchList } from '../actions'
+import { setWatchlist, getNews, removeFromWatchList, addToWatchList } from '../actions'
 
 class Stock extends Component {
 
@@ -25,26 +25,6 @@ class Stock extends Component {
         })
       })
   }
-  
-  addToWatchList = ()=>{
-    fetch(`${process.env.REACT_APP_BACKEND}/add_to_watchlist/${this.props.stock.id}`, {
-      method: 'POST',
-      headers: { 
-        "Authorization": localStorage.token,
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify({
-        user_id:  this.props.currentUser.id,
-        stock_id: this.props.stock.id
-      })
-    })
-    .then(resp => resp.json())
-    .then(stock => {this.props.setWatchlist([stock,...this.props.watchlist])})
-    .then(() => this.setState({watching: true}))
-    .then(() => this.props.getNews(this.props.watchlist))
-  }
-  
 
   watchingMarkers =()=>{
     const { watchlist, stock } = this.props
@@ -57,12 +37,12 @@ class Stock extends Component {
   }
   
   handleWatchingMarkers =()=>{
-    const { watchlist, stock, removeFromWatchList } = this.props
+    const { watchlist, stock, removeFromWatchList, addToWatchList, currentUser } = this.props
     const watchlistTickers = watchlist.map(stock => stock.ticker)
     if (watchlistTickers.includes(stock.ticker)) {
       removeFromWatchList(stock.id)
     } else{
-      this.addToWatchList()
+      addToWatchList(stock.id, currentUser.id, watchlist)
     }
   }
 
@@ -193,4 +173,5 @@ function msp(state) {
 export default connect(msp, { 
   setWatchlist, 
   getNews,
-  removeFromWatchList })(Stock)
+  removeFromWatchList,
+  addToWatchList })(Stock)
