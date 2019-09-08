@@ -59,35 +59,24 @@ function autoLogin(){
         })
       }
     }
-  }
-
-function getWatchlist(currentUser){
-  return function(dispatch){
-    let newWatchlist = []
-    fetch(`${process.env.REACT_APP_BACKEND}/users/${currentUser.id}`)
-      .then(resp => resp.json())
-      .then(user => {
-        dispatch(setWatchlist(user.stocks))
-        newWatchlist = user.stocks
-      })
-      .then(() => dispatch(getNews(newWatchlist)))
-  }
 }
 
-  function getNews(watchlist){
-    return function(dispatch){
-      const promiseArray = watchlist.map(stock => {
-        return fetch(`${process.env.REACT_APP_TEST_API_URL}/stock/${stock.ticker}/news?token=${process.env.REACT_APP_TEST_API_KEY}`)
-        .then(resp => resp.json())
-      })
+function getNews(watchlist){
+  return function(dispatch){
+    console.log('YO!')
+    const promiseArray = watchlist.map(stock => {
+      return fetch(`${process.env.REACT_APP_TEST_API_URL}/stock/${stock.ticker}/news?token=${process.env.REACT_APP_TEST_API_KEY}`)
+      .then(resp => resp.json())
+    })
 
-      Promise.all(promiseArray)
-      .then(responses => {
-        const response = responses.flat()
-        dispatch({ type: NEWS, payload: response })
-      })
-    }
+    Promise.all(promiseArray)
+    .then(responses => {
+      const response = responses.flat()
+      console.log('GETTING NEWS:', response)
+      dispatch({ type: NEWS, payload: response })
+    })
   }
+}
 
 function removeFromWatchList(stockId) {
   return function(dispatch){
@@ -102,16 +91,13 @@ function removeFromWatchList(stockId) {
     })
       .then(resp => resp.json())
       .then(watchlist => {
-        console.log(watchlist)
-        dispatch(setWatchlist(watchlist))})
+        dispatch(setWatchlist(watchlist))
+        dispatch(getNews(watchlist))
+      })
+
   }
 }
 
-  // function template(argsFromComponent){
-  //   return function(dispatch){
-  
-  //   }
-  // }
 
 export {
   setStocks,
@@ -122,7 +108,12 @@ export {
   setCurrentStock,
   setShowStock,
   autoLogin,
-  getWatchlist,
   getNews,
   removeFromWatchList
 }
+
+// <---- TEMPLATE ---->
+// function template(argsFromComponent){
+//   return function(dispatch){       
+//   }
+// }
