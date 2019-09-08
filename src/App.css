@@ -1,7 +1,7 @@
 .ui.input>input {
   background-color: rgba(124, 117, 117, 0.712);
   width: 600px;
-  /* margin-left: 207px; */
+  margin-right: 1.78em;
 }
 
 .ui.search .prompt {
