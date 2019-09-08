@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Grid, List, Segment } from 'semantic-ui-react'
+import { Grid, List, Segment, Icon } from 'semantic-ui-react'
+import { removeFromWatchList, addToWatchList } from '../actions'
+import { SHOWSTOCK } from '../types'
 
 class Company extends Component {
 
@@ -67,7 +69,7 @@ class Company extends Component {
           latestPrice: stock.latestPrice
         })
       })
-    }
+  }
 
   componentDidMount(){
     this.info = setInterval(()=>this.getStockInfo(), 1000)
@@ -87,8 +89,19 @@ class Company extends Component {
     clearInterval(this.info)
   }
 
-  render() {
+  handleWatchingMarkers = ()=>{
+    // console.log('CLICKED')
+    const { watchlist, removeFromWatchList, addToWatchList, currentUser, showStock } = this.props
+    const watchlistTickers = watchlist.map(stock => stock.ticker)
+    if (watchlistTickers.includes(showStock.ticker)) {
+      removeFromWatchList(showStock.id)
+    } else {
+      addToWatchList(showStock.id, currentUser.id, watchlist)
+    }
+  }
 
+
+  render() {
     const {
       symbol,
       companyName,
@@ -142,6 +155,16 @@ class Company extends Component {
             </List>
           </Grid.Column>
         </Grid>
+        {this.props.showStock ? 
+          <Icon 
+            name='plus circle' 
+            color={this.props.watchlist.find(w => w.ticker === this.state.symbol) ? 'blue' : 'grey'} 
+            style={{float: 'right', padding: '7px'}}
+            onClick={this.handleWatchingMarkers}
+            // onClick={()=>console.log('CLICKED')}
+          />
+          : null
+        }
       </div>
     )
   }
@@ -151,7 +174,10 @@ function msp(state) {
   return {
     watchlist: state.stocks.watchlist,
     currentStock: state.stocks.currentStock,
+    currentUser: state.user.currentUser,
   }
 }
 
-export default connect(msp)(Company)
+export default connect(msp, {
+  removeFromWatchList,
+  addToWatchList})(Company)
